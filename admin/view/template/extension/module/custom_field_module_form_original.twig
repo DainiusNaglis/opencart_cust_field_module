@@ -1,0 +1,268 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+         <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-type">{{ entry_type }}</label>
+            <div class="col-sm-10">
+              <select name="type" id="input-type" onchange="myFunction();" class="form-control">
+                <optgroup label="{{ text_choose }}">
+                {% if type == 'select' %}
+                <option value="select" selected="selected">{{ text_select }}</option>
+                {% else %}
+                <option value="select">{{ text_select }}</option>
+                {% endif %}
+                
+                {% if type == 'radio' %}
+                <option value="radio" selected="selected">{{ text_radio }}</option>
+                {% else %}
+                <option value="radio">{{ text_radio }}</option>
+                {% endif %}
+                
+                {% if type == 'checkbox' %}
+                <option value="checkbox" selected="selected">{{ text_checkbox }}</option>
+                {% else %}
+                <option value="checkbox">{{ text_checkbox }}</option>
+                {% endif %}
+                </optgroup>
+                
+                <optgroup label="{{ text_input }}">
+                {% if type == 'text' %}
+                <option value="text" selected="selected">{{ text_text }}</option>
+                {% else %}
+                <option value="text">{{ text_text }}</option>
+                {% endif %}
+                
+                {% if type == 'textarea' %}
+                <option value="textarea" selected="selected">{{ text_textarea }}</option>
+                {% else %}
+                <option value="textarea">{{ text_textarea }}</option>
+                {% endif %}
+                </optgroup>
+                
+                <optgroup label="{{ text_file }}">
+                {% if type == 'file' %}
+                <option value="file" selected="selected">{{ text_file }}</option>
+                {% else %}
+                <option value="file">{{ text_file }}</option>
+                {% endif %}
+                </optgroup>
+                
+                <optgroup label="{{ text_date }}">
+                {% if type == 'date' %}
+                <option value="date" selected="selected">{{ text_date }}</option>
+                {% else %}
+                <option value="date">{{ text_date }}</option>
+                {% endif %}
+                
+                {% if type == 'time' %}
+                <option value="time" selected="selected">{{ text_time }}</option>
+                {% else %}
+                <option value="time">{{ text_time }}</option>
+                {% endif %}
+                
+                {% if type == 'datetime' %}
+                <option value="datetime" selected="selected">{{ text_datetime }}</option>
+                {% else %}
+                <option value="datetime">{{ text_datetime }}</option>
+                {% endif %}
+                </optgroup>
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-key">{{ entry_key }}</label>
+            <div class="col-sm-10">
+              <input type="text" name=input_key value="{{input_key}}" placeholder="Custom Field Key (Example = home_text_top)" id="input-key" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+                <label class="col-sm-2 control-label">{{entry_stores}}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;"> {% for store in stores %}
+                    <div class="checkbox">
+                      <label> {% if store.store_id in custom_field_module_store %}
+                        <input type="checkbox" name="custom_field_module_store[]" value="{{ store.store_id }}" checked="checked" />
+                        {{ store.name }}
+                        {% else %}
+                        <input type="checkbox" name="custom_field_module_store[]" value="{{ store.store_id }}" />
+                        {{ store.name }}
+                        {% endif %}</label>
+                    </div>
+                    {% endfor %}</div>
+                </div>
+              </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="module_custom_field_status" id="input-status" class="form-control">
+                {% if module_custom_field_status %}
+                
+                
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                
+                
+                {% else %}
+                
+                
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                
+                
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          
+          
+          <ul class="nav nav-tabs" id="language" name="language">
+            <li class="active" value="0">
+               <a href="#language1" data-toggle="tab" aria-expanded="true"><img src="language/en-gb/en-gb.png" title="English"> English</a>
+            </li>
+            <li class="" value="1">
+               <a href="#language2" data-toggle="tab" aria-expanded="true"><img src="language/lt/lt.png" title="Lithuania"> Lithuania</a>
+            </li>
+          </ul>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-custom-field-name">{{ entry_custom_field_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name=input_custom_field_name value="{{input_custom_field_name}}" placeholder="Custom Field Name" id="input-custom-field-name" class="form-control">
+            </div>
+          </div>
+          
+          <div class="form-group" id="display-valuee" style="display:none">
+            <label class="col-sm-2 control-label" for="input-value">{{ entry_value }}</label>
+            <div class="col-sm-10">
+              <textarea name="textarea_value" placeholder="{{ entry_value }}" id="input-value" data-toggle="summernote" data-lang="{{sumernote}}" class="form-control">{{ textarea_value }}</textarea>
+            </div>
+          </div>
+          
+          <div class="form-group" id="display-text-valuee" style="display:none">
+            <label class="col-sm-2 control-label" for="input-value">{{ entry_value }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="value" value="{{value}}" placeholder="{{ entry_value }}" id="input-value" class="form-control" />
+            </div>
+          </div>
+          
+          {% if check == true %}
+          {% if type == 'textarea' %}
+         <script type="text/javascript"><!--
+         $('select[name=\'type\']').on('change', function() {
+              if (this.value == 'text') {
+                $('#display-valuee').hide();
+                $('#display-text-valuee').show();
+            } else if (this.value == 'textarea'){
+                $('#display-text-valuee').hide(); 
+               $('#display-valuee').show();              
+            } else {
+                $('#display-text-valuee').hide();
+                $('#display-valuee').hide();
+            }
+	});
+
+$('select[name=\'type\']').trigger('change');
+
+//--></script>
+          
+          {% endif %}
+
+          {% if type == 'text' %}
+         <script type="text/javascript"><!--
+         $('select[name=\'type\']').on('change', function() {
+            if (this.value == 'text') {
+                $('#display-valuee').hide();
+                $('#display-text-valuee').show();
+            } else if (this.value == 'textarea'){
+                $('#display-text-valuee').hide(); 
+               $('#display-valuee').show();              
+            } else {
+                $('#display-text-valuee').hide();
+                $('#display-valuee').hide();
+            }   
+	});
+
+$('select[name=\'type\']').trigger('change');
+
+//--></script>
+
+          {% endif %}
+          {% endif %}
+          
+          {% if check == false %}
+          <div class="form-group" id="display-value" style="display:none">
+            <label class="col-sm-2 control-label" for="input-value">{{ entry_value }}</label>
+            <div class="col-sm-10">
+              <textarea name="textarea_value" placeholder="{{ entry_value }}" id="input-value" data-toggle="summernote" data-lang="{{sumernote}}" class="form-control">{{ textarea_value }}</textarea>
+            </div>
+          </div>
+          <div class="form-group" id="display-text-value" style="display:none">
+            <label class="col-sm-2 control-label" for="input-value">{{ entry_value }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="value" value="{{value}}" placeholder="{{ entry_value }}" id="input-value" class="form-control" />
+            </div>
+          </div>
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+      function myFunction()
+      {
+          var x = document.getElementById("input-type").value;
+          if(x === "textarea")
+              {
+                  document.getElementById("display-text-value").style.display="none";
+                  document.getElementById("display-value").style.display="block";
+              }
+          else if(x === "text")
+              {
+                  document.getElementById("display-value").style.display="none";
+                  document.getElementById("display-text-value").style.display="block";
+              }
+          else
+              {
+                  document.getElementById("display-value").style.display="none";
+                  document.getElementById("display-text-value").style.display="none";
+              }
+      }
+    </script>
+
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+  <link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+</div>
+
+{{ footer }}

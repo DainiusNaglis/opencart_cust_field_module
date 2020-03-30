@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Custom Fields Module</name>
+    <version>1.0</version>
+    <author>Dainius Naglis</author>
+    <link>http://localhost/orcatask/</link>
+    <code>orcatask_custom_fields_module</code>
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <search><![CDATA[ $this->load->model('sale/order'); ]]></search>
+            <add position="before"><![CDATA[$data['menus'][] = array(
+				'id'       => 'menu-custfields',
+				'icon'	   => 'fa-bars', 
+				'name'	   => $this->language->get('text_custom_field'),
+				'href'     => $this->url->link('extension/module/custom_field_module', 'user_token=' . $this->session->data['user_token'], true),
+			);]]></add>
+        </operation>
+    </file>
+</modification>
